@@ -1,0 +1,38 @@
+// Dota Heroes File
+// NOTE: This is not for creating new heroes, this is for taking a currently existing hero as a template and overriding
+// the specified key-value combinations.  Use override_hero <hero_to_override> for this.
+"DOTAHeroes"
+{
+	"Water Ninja"
+	{
+		"override_hero"				"npc_dota_hero_kunkka"			// Hero to override
+		"AbilityLayout"             "6"
+		"Ability1"					"Shunshinjutsu"
+		"Ability2"					"Water_Shuriken"
+		"Ability3"					"Detection"
+		"Ability4"					"Water_Missile"		
+		"Ability5"					"morphling_waveform"				
+		"Ability6"					"kunkka_torrent"
+		"ArmorPhysical"				"0"
+		"MagicalResistance"			"0"
+		"HasInventory"				"0"					
+		"AttackDamageMin"			"1"
+		"AttackDamageMax"			"1"		
+		"VisionNighttimeRange"		"850"
+		"VisionDaytimeRange"		"1000"
+		"AttributeBaseStrength"		"0"
+		"AttributeStrengthGain"		"0"
+		"AttributeBaseIntelligence"	"0"
+		"AttributeIntelligenceGain"	"0"
+		"AttributeBaseAgility"		"0"
+		"AttributeAgilityGain"		"0"
+		"BountyXP"					"300"
+		"BountyGoldMin"				"0"
+		"BountyGoldMax"				"0"
+		"MovementTurnRate"			"1.0"
+		"StatusHealth"				"1"
+		"StatusHealthRegen"			"0.0"
+		"StatusMana"				"1"
+		"StatusManaRegen"			"100"
+	}
+}

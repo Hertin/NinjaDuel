@@ -1,0 +1,260 @@
+// Dota Heroes File
+"DOTAAbilities"
+{
+	"Version"		"1"
+
+	"Water_Shuriken"	//水手里剑
+	{
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"morphling_adaptive_strike"
+		"MaxLevel"				  		"1"
+		"AbilityCooldown"				"6"
+
+		"AbilityManaCost"				"0"
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"			"Hero_Morphling.AdaptiveStrike"
+				"Target"				"CASTER"
+			}
+
+			"LinearProjectile"
+			{
+				"Target"				"POINT"
+				"EffectName"			"particles/morphling_base_attack.vpcf"
+				"MoveSpeed"				"1000"
+				"StartRadius"			"125"
+				"StartPosition"			"attach_hitloc"
+				"EndRadius"				"125"
+				"FixedDistance"			"900"
+				"TargetTeams"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+				"TargetTypes"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+				"TargetFlags"			"DOTA_UNIT_TARGET_FLAG_NONE"
+			}
+		}
+
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"	"0"
+
+			"Damage"
+			{
+				"Target"				"TARGET"
+				"Type"					"DAMAGE_TYPE_MAGICAL"
+				"Damage"				"0"
+			}
+			"FireSound"
+			{
+				"EffectName"			"Hero_Morphling.AdaptiveStrike"
+				"Target"				"CASTER"
+			}
+			"RunScript"
+        	{
+        		"ScriptFile"			"scripts/vscripts/Water_Shuriken.lua"
+        		"Function"				"Water_Shuriken_OnProjectileHit"
+                "Target"				"TARGET"
+        	}
+		}
+	}
+
+	"Shunshinjutsu" //瞬身术
+	{
+		"MaxLevel"				  		"1"
+        "AbilityBehavior"              	"DOTA_ABILITY_BEHAVIOR_NO_TARGET|DOTA_ABILITY_BEHAVIOR_IMMEDIATE|DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT"
+        "BaseClass"               		"ability_datadriven"
+        "AbilityTextureName"        	"morphling_replicate"
+
+        "AbilityCastPoint"              "0.0"
+        "AbilityCooldown"               "4"
+        "AbilityManaCost"         		"0"
+
+        "OnSpellStart"
+        {
+        	"RunScript"
+        	{
+        		"ScriptFile"			"scripts/vscripts/Shunshinjutsu.lua"
+        		"Function"				"Shunshinjutsu"
+        		"Target"                "CASTER"
+        	}
+			"FireSound"
+			{
+				"EffectName"			"Hero_Morphling.Waveform"
+				"Target"				"CASTER"
+			}
+
+	        "ApplyModifier"
+	        {
+	            "Target"            	"CASTER"
+	            "ModifierName"        	"modifier_invulnerable"
+	            "Duration"            	"1"
+	        }
+        }
+        "Modifiers"
+        {
+	        "modifier_invulnerable"
+	    	{
+	    		"Passive"				"0"
+	    		"IsHidden"				"1"		//is the buff icon hidden
+	    		"IsDebuff"				"0"	    	    
+				"Duration"         		"1"
+				"OnCreated"
+				{
+
+					"AttachEffect"
+					{
+						//"EffectName"		"particles/waveform.vpcf" 
+		    			"EffectName"		"particles/units/heroes/hero_morphling/morphling_ambient_new.vpcf"
+		    			"EffectAttachType"	"follow_overhead"
+		    			"Target"            "CASTER"
+		           		"ControlPointEntities"
+		        		{
+				            "TARGET" "follow_origin" 
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin" 
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin" 
+
+		        		} 
+					}    		
+	    		}
+
+	
+	    		"States"
+	    		{
+	    			//"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+	    			//"MODIFIER_STATE_INVISIBLE" "MODIFIER_STATE_VALUE_ENABLED"
+	    			"MODIFIER_STATE_NO_UNIT_COLLISION" 	"MODIFIER_STATE_VALUE_ENABLED"
+
+	    			"MODIFIER_STATE_NO_HEALTH_BAR"		"MODIFIER_STATE_VALUE_ENABLED"
+	    			//"MODIFIER_STATE_OUT_OF_GAME"	"MODIFIER_STATE_VALUE_ENABLED"
+	    			//"MODIFIER_STATE_NO_TEAM_SELECT"	"MODIFIER_STATE_VALUE_ENABLED"
+	    			"MODIFIER_STATE_UNSELECTABLE"		"MODIFIER_STATE_VALUE_ENABLED"
+
+	    		}
+	    		"Properties"
+			    {
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL"			"1"
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL"			"1"
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE"				"1"
+					"MODIFIER_PROPERTY_ABSORB_SPELL"						"1"
+					"MODIFIER_PROPERTY_INCOMING_SPELL_DAMAGE_CONSTANT" 		"-1000"
+					"MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_PERCENTAGE" "-100"
+			    }
+	    	}
+
+        }
+
+        // Special
+        //-------------------------------------------------------------------------------------------------------------
+	    "AbilitySpecial"
+	    {
+	    }
+	}
+	"Detection"		//探测，
+	{
+	    "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_NO_TARGET"
+	    "AbilityUnitDamageType"                        	"DAMAGE_TYPE_PURE"        
+	    "AbilityUnitTargetTeam"                        	"DOTA_UNIT_TARGET_TEAM_ENEMY"
+	    "BaseClass"                                    	"ability_datadriven"
+	    "AbilityTextureName"                        	"mirana_arrow"
+		"MaxLevel"				  						"1"
+	    "AbilityCastPoint"                              "0.5"
+	    "AbilityCooldown"                               "12"
+	    "AbilityManaCost"                                "0"
+
+	    "OnSpellStart"
+	    {
+	    	"RunScript"
+	    	{
+	    		"ScriptFile"							"scripts/vscripts/Detection.lua"
+	    		"Function"								"Detection"
+	            "Target"
+	            {
+	                    "Types"                			"DOTA_UNIT_TARGET_BASIC|DOTA_UNIT_TARGET_HERO"
+	                    "Teams"                			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+	                    "Flags"                			"DOTA_UNIT_TARGET_FLAG_NONE"
+	                    "Center"        				"CASTER"
+	                    "Radius"        				"%radius"
+	            }
+	    	}
+	    	"FireSound"
+			{
+				"EffectName"							"Hero_Mirana.ArrowCast"
+				"Target"								"CASTER"
+			}
+	    	
+	    }
+	    // Special
+	    //-------------------------------------------------------------------------------------------------------------
+	    "AbilitySpecial"
+		{
+	        "01"
+	        {
+	            "var_type"               	"FIELD_INTEGER"
+	            "damage"                	"0"
+	        }
+	        "02"
+	        {
+	            "var_type"                	"FIELD_INTEGER"
+	            "radius"                	"5000"
+	        }
+	    }
+	}
+
+	"Water_Missile"		//水弹
+	{
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"puck_illusory_orb"
+		"AbilityCastRange"				"900"
+		"AbilityCastAnimation"			"ACT_DOTA_ATTACK"
+		"AbilityCooldown"				"16 12 10 7"
+		"AbilityManaCost"				"0"
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"			"Hero_Morphling.projectileImpact"
+				"Target"				"CASTER"
+			}
+
+			"LinearProjectile"
+			{
+				"Target"				"POINT"
+				"EffectName"			"particles/econ/items/puck/puck_alliance_set/puck_illusory_orb_aproset.vpcf"
+				"MoveSpeed"				"675"
+				"StartRadius"			"125"
+				"StartPosition"			"attach_sword"
+				"EndRadius"				"150"
+				"FixedDistance"			"1200"
+				"TargetTeams"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+				"TargetTypes"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+				"TargetFlags"			"DOTA_UNIT_TARGET_FLAG_NONE"
+				"HasFrontalCone"		"1"
+				"ProvidesVision"		"0"
+			}
+		}
+
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"	"0"
+			"Damage"
+			{
+				"Target"				"TARGET"
+				"Type"					"DAMAGE_TYPE_MAGICAL"
+				"Damage"				"100"
+			}
+		}
+	}
+}
