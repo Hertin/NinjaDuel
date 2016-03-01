@@ -1,5 +1,6 @@
 -- This is the primary barebones gamemode script and should be used to assist in initializing your game mode
 
+KILLS_TO_END_GAME_FOR_TEAM=50
 have_set_respawn_vector=false
 respawn_vector={}
 
@@ -174,15 +175,12 @@ function GameMode:_InitGameMode()
   ListenToGameEvent('entity_killed', Dynamic_Wrap(GameMode, 'OnEntityKilled'), self)
   --ListenToGameEvent('player_connect_full', Dynamic_Wrap(GameMode, 'OnConnectFull'), self)
   --ListenToGameEvent('player_disconnect', Dynamic_Wrap(GameMode, 'OnDisconnect'), self)
-
-
   ListenToGameEvent('player_connect', Dynamic_Wrap(GameMode, 'PlayerConnect'), self)
-  --ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(GameMode, 'OnGameRulesStateChange'), self)
+  ListenToGameEvent('game_rules_state_change', Dynamic_Wrap(GameMode, 'OnGameRulesStateChange'), self)
   ListenToGameEvent('npc_spawned', Dynamic_Wrap(GameMode, 'OnNPCSpawned'), self)
   ListenToGameEvent('dota_player_pick_hero', Dynamic_Wrap(GameMode, 'OnPlayerPickHero'), self)
   ListenToGameEvent('dota_team_kill_credit', Dynamic_Wrap(GameMode, 'OnTeamKillCredit'), self)
   --ListenToGameEvent("player_reconnected", Dynamic_Wrap(GameMode, 'OnPlayerReconnect'), self)
-
   ListenToGameEvent("dota_player_selected_custom_team", Dynamic_Wrap(GameMode, 'OnPlayerSelectedCustomTeam'), self)
   
   --ListenToGameEvent("dota_tutorial_shop_toggled", Dynamic_Wrap(GameMode, 'OnShopToggled'), self)
@@ -195,7 +193,7 @@ function GameMode:_InitGameMode()
   --ListenToGameEvent('dota_combatlog', Dynamic_Wrap(GameMode, 'OnCombatLogEvent'), self)
   --ListenToGameEvent('dota_player_killed', Dynamic_Wrap(GameMode, 'OnPlayerKilled'), self)
   --ListenToGameEvent('player_team', Dynamic_Wrap(GameMode, 'OnPlayerTeam'), self)
-
+  CustomGameEventManager:RegisterListener( "kill_goal", on_kill_goal )
   --[[This block is only used for testing events handling in the event that Valve adds more in the future
   Convars:RegisterCommand('events_test', function()
       GameMode:StartEventTest()
@@ -212,6 +210,41 @@ function GameMode:_InitGameMode()
   self.vUserIds = {}
 
 end
+
+function GameMode:OnGameRulesStateChange()
+  local state = GameRules:State_Get()
+  if state==2 then --loading
+    print("creating hub")
+    CustomUI:DynamicHud_Create(-1,"kill_goal_menu","file://{resources}/layout/custom_game/custom_ui_manifest.xml",nil)
+  elseif state==DOTA_GAMERULES_STATE_HERO_SELECTION then --heropicking
+    CustomUI:DynamicHud_Destroy(-1,"kill_goal_menu")
+  end
+end
+
+function on_kill_goal( events, keys )
+  
+  local player = PlayerResource:GetPlayer(keys.PlayerID)
+  local is_host = GameRules:PlayerHasCustomGameHostPrivileges(player)
+  local kill_num = keys.kill_goal
+  print (kill_num)
+  -- 判断是不是房主
+  if not is_host then
+    return nil
+  end
+  --判断传进来的是不是空值
+  if not kill_num then
+    KILLS_TO_END_GAME_FOR_TEAM = 50
+    return
+  end
+
+  -- 判断是否已经更改过了
+  KILLS_TO_END_GAME_FOR_TEAM = tonumber(kill_num)  
+  CustomUI:DynamicHud_Destroy(-1,"kill_goal_menu")
+  GameRules:LockCustomGameSetupTeamAssignment(true)
+  GameRules:SetCustomGameSetupRemainingTime(3)
+end
+
+
 
 mode = nil
 

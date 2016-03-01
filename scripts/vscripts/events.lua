@@ -1,6 +1,6 @@
-have_set_respawn_vector = false
+
 --respawn_vector={}
-KILLS_TO_END_GAME_FOR_TEAM=50
+
 -- The overall game state has changed
 function GameMode:OnGameRulesStateChange(keys)
   -- This internal handling is used to set up main barebones functions

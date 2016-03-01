@@ -1,0 +1,17 @@
+#kill_goal
+{
+  align:center center;
+  margin-bottom: 50%;
+  margin-left: 30%;
+  font-size: 28;
+  font-weight: normal;
+  flow-children: down;
+
+}
+
+.goals
+{
+  align:center center;
+  font-size: 30;
+  font-weight: normal;
+}
