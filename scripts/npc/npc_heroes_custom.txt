@@ -7,7 +7,7 @@
 	{
 		"override_hero"				"npc_dota_hero_kunkka"			// Hero to override
 		"AbilityLayout"             "6"
-		"Ability1"					"Shunshinjutsu"
+		"Ability1"					"Water_Shunshinjutsu"
 		"Ability2"					"Water_Shuriken"
 		"Ability3"					"Detection"
 		"Ability4"					"Water_Missile"		
@@ -26,7 +26,7 @@
 		"AttributeIntelligenceGain"	"0"
 		"AttributeBaseAgility"		"0"
 		"AttributeAgilityGain"		"0"
-		"BountyXP"					"300"
+		"BountyXP"					"100"
 		"BountyGoldMin"				"0"
 		"BountyGoldMax"				"0"
 		"MovementTurnRate"			"1.0"
@@ -35,4 +35,41 @@
 		"StatusMana"				"1"
 		"StatusManaRegen"			"100"
 	}
+
+	"Fire Ninja"
+	{
+		"override_hero"				"npc_dota_hero_lina"			// Hero to override
+		"AbilityLayout"             "6"
+		"Ability1"					"Fire_Shunshinjutsu"
+		"Ability2"					"Fire_Shuriken"
+		"Ability3"					"Detection"
+		"Ability4"					"lina_dragon_slave"		
+		"Ability5"					"Zanzou"				
+		"Ability6"					"Zanzou_kai"
+		"MaxLevel"					"8"
+		"AttackRange"				"140"
+		"ArmorPhysical"				"0"
+		"MagicalResistance"			"0"
+		"HasInventory"				"0"					
+		"AttackDamageMin"			"1"
+		"AttackDamageMax"			"1"		
+		"VisionNighttimeRange"		"850"
+		"VisionDaytimeRange"		"1000"
+		"AttributeBaseStrength"		"0"
+		"AttributeStrengthGain"		"0"
+		"AttributeBaseIntelligence"	"0"
+		"AttributeIntelligenceGain"	"0"
+		"AttributeBaseAgility"		"0"
+		"AttributeAgilityGain"		"0"
+		"BountyXP"					"100"
+		"BountyGoldMin"				"0"
+		"BountyGoldMax"				"0"
+		"MovementTurnRate"			"1.0"
+		"StatusHealth"				"1"
+		"StatusHealthRegen"			"0.0"
+		"StatusMana"				"1"
+		"StatusManaRegen"			"100"
+	}
+
+
 }

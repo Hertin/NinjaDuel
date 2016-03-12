@@ -2,7 +2,7 @@
 "DOTAAbilities"
 {
 	"Version"		"1"
-
+// ----------------------------------------------------Shuriken-----------------------------------------------------------------------//
 	"Water_Shuriken"	//水手里剑
 	{
 		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT"
@@ -26,11 +26,11 @@
 			{
 				"Target"				"POINT"
 				"EffectName"			"particles/morphling_base_attack.vpcf"
-				"MoveSpeed"				"1000"
-				"StartRadius"			"125"
+				"MoveSpeed"				"650"
+				"StartRadius"			"100"
 				"StartPosition"			"attach_hitloc"
-				"EndRadius"				"125"
-				"FixedDistance"			"900"
+				"EndRadius"				"100"
+				"FixedDistance"			"800"
 				"TargetTeams"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
 				"TargetTypes"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
 				"TargetFlags"			"DOTA_UNIT_TARGET_FLAG_NONE"
@@ -54,14 +54,191 @@
 			}
 			"RunScript"
         	{
-        		"ScriptFile"			"scripts/vscripts/Water_Shuriken.lua"
+        		"ScriptFile"			"scripts/vscripts/abilities/Water_Shuriken.lua"
         		"Function"				"Water_Shuriken_OnProjectileHit"
                 "Target"				"TARGET"
         	}
 		}
 	}
 
-	"Shunshinjutsu" //瞬身术
+	"Fire_Shuriken"	//火手里剑
+	{
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT | DOTA_ABILITY_BEHAVIOR_IMMEDIATE | DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"ember_spirit_searing_chains"
+		"MaxLevel"				  		"1"
+		"AbilityCooldown"				"6"
+
+		"AbilityManaCost"				"0"
+
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"			"Hero_EmberSpirit.FireRemnant.Activate"
+				"Target"				"CASTER"
+			}
+
+			"LinearProjectile"
+			{
+				"Target"				"POINT"
+				"EffectName"			"particles/lina_base_attack.vpcf"
+				"MoveSpeed"				"650"
+				"StartRadius"			"100"
+				"StartPosition"			"attach_hitloc"
+				"EndRadius"				"100"
+				"FixedDistance"			"800"
+				"TargetTeams"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+				"TargetTypes"			"DOTA_UNIT_TARGET_BASIC | DOTA_UNIT_TARGET_HERO"
+				"TargetFlags"			"DOTA_UNIT_TARGET_FLAG_NONE"
+			}
+		}
+		
+		"precache"
+		{
+			"particle"  "particles/lina_base_attack.vpcf"
+			"particle"  "particles/units/heroes/hero_lina/lina_spell_light_strike_array.vpcf"
+			"particle"  "particles/units/heroes/hero_lina/lina_spell_light_strike_array_explosion.vpcf"
+			"particle"  "particles/units/heroes/hero_lina/lina_spell_light_strike_array_ashes.vpcf"
+			"particle"  "particles/units/heroes/hero_lina/lina_spell_light_strike_array_fire_b.vpcf"
+
+
+			"soundfile" "soundevents\game_sounds_heroes\game_sounds_ember_spirit.vsndevts"
+			"soundfile" "soundevents/game_sounds_heroes/game_sounds_lina.vsndevts"
+		}
+
+		"OnProjectileHitUnit"
+		{
+			"DeleteOnHit"	"0"
+
+			"Damage"
+			{
+				"Target"				"TARGET"
+				"Type"					"DAMAGE_TYPE_MAGICAL"
+				"Damage"				"0"
+			}
+			"FireSound"
+			{
+				"EffectName"			"Ability.LightStrikeArray"
+				"Target"				"CASTER"
+			}
+			"RunScript"
+        	{
+        		"ScriptFile"			"scripts/vscripts/abilities/Fire_Shuriken.lua"
+        		"Function"				"Fire_Shuriken_OnProjectileHit"
+                "Target"				"TARGET"
+        	}
+		}
+	}
+
+// --------------------------------------------------------Shunshinjutsu--------------------------------------------------------------------//
+
+	"Fire_Shunshinjutsu" //火替身术
+	{
+		"MaxLevel"				  		"1"
+        "AbilityBehavior"              	"DOTA_ABILITY_BEHAVIOR_NO_TARGET|DOTA_ABILITY_BEHAVIOR_IMMEDIATE|DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT"
+        "BaseClass"               		"ability_datadriven"
+        "AbilityTextureName"        	"ember_spirit_fire_remnant"
+
+        "AbilityCastPoint"              "0.0"
+        "AbilityCooldown"               "4"
+        "AbilityManaCost"         		"0"
+
+        "OnSpellStart"
+        {
+        	"RunScript"
+        	{
+        		"ScriptFile"			"scripts/vscripts/abilities/Fire_Shunshinjutsu.lua"
+        		"Function"				"Fire_Shunshinjutsu"
+        		"Target"                "CASTER"
+        	}
+			"FireSound"
+			{
+				"EffectName"			"Hero_EmberSpirit.FlameGuard.Cast"
+				"Target"				"CASTER"
+			}
+
+	        "ApplyModifier"
+	        {
+	            "Target"            	"CASTER"
+	            "ModifierName"        	"modifier_invulnerable"
+	            "Duration"            	"1"
+	        }
+        }
+
+		"precache"
+		{
+			"particle"  "particles/units/heroes/hero_ember_spirit/ember_spirit_remnant_dash.vpcf"
+			"soundfile" "soundevents\game_sounds_heroes\game_sounds_ember_spirit.vsndevts"
+			// "soundfile" "soundevents/game_sounds_heroes/game_sounds_lina.vsndevts"
+		}
+
+
+
+        "Modifiers"
+        {
+	        "modifier_invulnerable"
+	    	{
+	    		"Passive"				"0"
+	    		"IsHidden"				"1"		//is the buff icon hidden
+	    		"IsDebuff"				"0"	    	    
+				"Duration"         		"1"
+				"OnCreated"
+				{
+
+					"AttachEffect"
+					{
+						//"EffectName"		"particles/waveform.vpcf" 
+		    			"EffectName"		"particles/units/heroes/hero_ember_spirit/ember_spirit_remnant_dash.vpcf"
+		    			"EffectAttachType"	"follow_overhead"
+		    			"Target"            "CASTER"
+		           		"ControlPointEntities"
+		        		{
+				            "TARGET" "follow_origin" 
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin" 
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin"
+				            "TARGET" "follow_origin" 
+
+		        		} 
+					}    		
+	    		}
+
+	
+	    		"States"
+	    		{
+	    			//"MODIFIER_STATE_INVULNERABLE"	"MODIFIER_STATE_VALUE_ENABLED"
+	    			//"MODIFIER_STATE_INVISIBLE" "MODIFIER_STATE_VALUE_ENABLED"
+	    			"MODIFIER_STATE_NO_UNIT_COLLISION" 	"MODIFIER_STATE_VALUE_ENABLED"
+
+	    			"MODIFIER_STATE_NO_HEALTH_BAR"		"MODIFIER_STATE_VALUE_ENABLED"
+	    			//"MODIFIER_STATE_OUT_OF_GAME"	"MODIFIER_STATE_VALUE_ENABLED"
+	    			//"MODIFIER_STATE_NO_TEAM_SELECT"	"MODIFIER_STATE_VALUE_ENABLED"
+	    			"MODIFIER_STATE_UNSELECTABLE"		"MODIFIER_STATE_VALUE_ENABLED"
+
+	    		}
+	    		"Properties"
+			    {
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_MAGICAL"			"1"
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PHYSICAL"			"1"
+					"MODIFIER_PROPERTY_ABSOLUTE_NO_DAMAGE_PURE"				"1"
+					"MODIFIER_PROPERTY_ABSORB_SPELL"						"1"
+					"MODIFIER_PROPERTY_INCOMING_SPELL_DAMAGE_CONSTANT" 		"-1000"
+					"MODIFIER_PROPERTY_INCOMING_PHYSICAL_DAMAGE_PERCENTAGE" "-100"
+			    }
+	    	}
+
+        }
+
+	}
+
+	"Water_Shunshinjutsu" //水替身术
 	{
 		"MaxLevel"				  		"1"
         "AbilityBehavior"              	"DOTA_ABILITY_BEHAVIOR_NO_TARGET|DOTA_ABILITY_BEHAVIOR_IMMEDIATE|DOTA_ABILITY_BEHAVIOR_DONT_CANCEL_MOVEMENT"
@@ -76,8 +253,8 @@
         {
         	"RunScript"
         	{
-        		"ScriptFile"			"scripts/vscripts/Shunshinjutsu.lua"
-        		"Function"				"Shunshinjutsu"
+        		"ScriptFile"			"scripts/vscripts/abilities/Water_Shunshinjutsu.lua"
+        		"Function"				"Water_Shunshinjutsu"
         		"Target"                "CASTER"
         	}
 			"FireSound"
@@ -159,6 +336,8 @@
 	    {
 	    }
 	}
+
+	// ----------------------------------------------------------Detection----------------------------------------------------------------//
 	"Detection"		//探测，
 	{
 	    "AbilityBehavior"                               "DOTA_ABILITY_BEHAVIOR_NO_TARGET"
@@ -175,7 +354,7 @@
 	    {
 	    	"RunScript"
 	    	{
-	    		"ScriptFile"							"scripts/vscripts/Detection.lua"
+	    		"ScriptFile"							"scripts/vscripts/abilities/Detection.lua"
 	    		"Function"								"Detection"
 	            "Target"
 	            {
@@ -257,4 +436,115 @@
 			}
 		}
 	}
+
+		// --------------------------------------------------------fire_Ninja-------------------------------------------------------------//
+
+	"Zanzou" // 残像
+	{
+		"BaseClass"						"ability_datadriven"
+		"AbilityTextureName"			"lina_fiery_soul"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_POINT"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_NONE"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_NONE"
+		"AbilityCastPoint"				"0.2"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_1"
+		"AbilityCooldown"				"0 0 0 0"
+		"AbilityManaCost"				"0"
+		"AbilityCastRange"				"750"
+
+		"precache"
+		{
+			"particle"  "particles/units/heroes/hero_ember_spirit/ember_spirit_sleight_of_fist_caster.vpcf"
+			"soundfile" "soundevents\game_sounds_heroes\game_sounds_ember_spirit.vsndevts"
+		}
+		"OnSpellStart"
+		{
+			"RunScript"
+			{
+				"Target"				"POINT"
+				"ScriptFile"			"scripts/vscripts/abilities/Zanzou.lua"
+				"Function"				"Zanzou"
+				"duration"				"%duration"
+				"radius"				"%radius"
+				"vision"				"%vision"
+			}
+		}
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"duration"	"15 20 25 30"
+			}
+			"02"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"radius"	"125"
+			}
+			"03"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"vision"	"500"
+			}
+		}
+	}
+
+	"Zanzou_kai"// 残像·解
+	{
+		"BaseClass"						"ability_datadriven"
+		"MaxLevel"				  		"1"
+		"AbilityTextureName"			"ember_spirit_activate_fire_remnant"
+		"AbilityBehavior"				"DOTA_ABILITY_BEHAVIOR_NO_TARGET | DOTA_ABILITY_BEHAVIOR_IMMEDIATE"
+		"AbilityUnitTargetType"			"DOTA_UNIT_TARGET_HERO | DOTA_UNIT_TARGET_BASIC"
+		"AbilityUnitTargetTeam"			"DOTA_UNIT_TARGET_TEAM_ENEMY"
+		"AbilityCastAnimation"			"ACT_DOTA_CAST_ABILITY_2"
+		"AbilityCooldown"				"0"
+		"AbilityManaCost"				"0"
+		"OnSpellStart"
+		{
+			"FireSound"
+			{
+				"EffectName"			"Hero_EmberSpirit.FireRemnant.Activate"
+				"Target"				"CASTER"
+			}
+			"RunScript"
+			{
+				"Target"				"CASTER"
+				"ScriptFile"			"scripts/vscripts/abilities/Zanzou.lua"
+				"Function"				"Zanzou_kai"
+				"radius"				"%radius"
+			}
+			// "AttachEffect"
+			// {
+			// 	//"EffectName"		"particles/waveform.vpcf" 
+   //  			"EffectName"		"particles/units/heroes/hero_ember_spirit/ember_spirit_remnant_dash.vpcf"
+   //  			"EffectAttachType"	"follow_origin"
+   //  			"Target"            "CASTER"
+   //         		"ControlPointEntities"
+   //      		{
+		 //            "TARGET" "follow_origin" 
+		 //            "TARGET" "follow_origin"
+		 //            "TARGET" "follow_origin"
+		 //            "TARGET" "follow_origin"
+		 //            "TARGET" "follow_origin" 
+		 //            "TARGET" "follow_origin"
+		 //            "TARGET" "follow_origin"
+		 //            "TARGET" "follow_origin"
+		 //            "TARGET" "follow_origin"
+		 //            "TARGET" "follow_origin" 
+
+   //      		} 
+			// }
+		}
+		"AbilitySpecial"
+		{
+			"01"
+			{
+				"var_type"	"FIELD_FLOAT"
+				"radius"	"150"
+			} 
+		}
+	}
+
+	
 }

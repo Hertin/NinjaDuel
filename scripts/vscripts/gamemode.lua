@@ -103,17 +103,20 @@ end
 -- It can be used to pre-initialize any values/tables that will be needed later
 function GameMode:InitGameMode()
   GameMode = self
-
+  print (have_set_respawn_vector)
   if not have_set_respawn_vector then
     have_set_respawn_vector = true
     local mapname = GetMapName()
-    local mx=1900
-    local my=1900
-    local ct=128
-    for x= -mx,mx,200 do
-      for y = -my,my,200 do
-        local p = Vector(x,y,128)
-        if GridNav:CanFindPath(p, Vector(0, 0, ct)) then
+    print (mapname)
+    local mx=max_x[mapname]
+    local my=max_y[mapname]
+    local bp=base_point[mapname]
+    local sp=spacing[mapname]
+    for x= -mx,mx,sp do
+      for y = -my,my,sp do     
+        local p = Vector(x,y,bp.z)   
+        if GridNav:CanFindPath(p, bp) then
+          --print ("inserted")
           table.insert(respawn_vector,p)
         end
       end
@@ -182,7 +185,7 @@ function GameMode:_InitGameMode()
   ListenToGameEvent('dota_team_kill_credit', Dynamic_Wrap(GameMode, 'OnTeamKillCredit'), self)
   --ListenToGameEvent("player_reconnected", Dynamic_Wrap(GameMode, 'OnPlayerReconnect'), self)
   ListenToGameEvent("dota_player_selected_custom_team", Dynamic_Wrap(GameMode, 'OnPlayerSelectedCustomTeam'), self)
-  
+  ListenToGameEvent("dota_player_gained_level", Dynamic_Wrap(GameMode,"OnPlayerGainedLevel"), self)
   --ListenToGameEvent("dota_tutorial_shop_toggled", Dynamic_Wrap(GameMode, 'OnShopToggled'), self)
 
   --ListenToGameEvent('player_spawn', Dynamic_Wrap(GameMode, 'OnNPCSpawned'), self)
@@ -226,22 +229,23 @@ function on_kill_goal( events, keys )
   local player = PlayerResource:GetPlayer(keys.PlayerID)
   local is_host = GameRules:PlayerHasCustomGameHostPrivileges(player)
   local kill_num = keys.kill_goal
+  print ("onkillgoal")
   print (kill_num)
   -- 判断是不是房主
   if not is_host then
     return nil
   end
   --判断传进来的是不是空值
-  if not kill_num then
-    KILLS_TO_END_GAME_FOR_TEAM = 50
+  if not kill_num or kill_num==0 then
+    KILLS_TO_END_GAME_FOR_TEAM = 30
     return
   end
 
   -- 判断是否已经更改过了
   KILLS_TO_END_GAME_FOR_TEAM = tonumber(kill_num)  
   CustomUI:DynamicHud_Destroy(-1,"kill_goal_menu")
-  GameRules:LockCustomGameSetupTeamAssignment(true)
-  GameRules:SetCustomGameSetupRemainingTime(3)
+  --GameRules:LockCustomGameSetupTeamAssignment(true)
+  --GameRules:SetCustomGameSetupRemainingTime(3)
 end
 
 

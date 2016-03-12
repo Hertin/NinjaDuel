@@ -1,6 +1,4 @@
-// this is the file where all the original hero abilities are located. You can override them in npc_abilities_override.txt. Our game does not need it but I put it here just for reference.
-//你可以在npc_abilities_override.txt里覆盖这些技能
-
+﻿
 // Dota Heroes File
 "DOTAAbilities"
 {

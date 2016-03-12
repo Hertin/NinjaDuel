@@ -105,3 +105,21 @@ CUSTOM_TEAM_PLAYER_COUNT[DOTA_TEAM_CUSTOM_5] = 1
 CUSTOM_TEAM_PLAYER_COUNT[DOTA_TEAM_CUSTOM_6] = 1
 CUSTOM_TEAM_PLAYER_COUNT[DOTA_TEAM_CUSTOM_7] = 1
 CUSTOM_TEAM_PLAYER_COUNT[DOTA_TEAM_CUSTOM_8] = 1
+
+max_x={
+	["map_verysamll"]=2000,
+	["map_small"]=4000
+}
+max_y={
+	["map_verysamll"]=2000,
+	["map_small"]=4000
+}
+base_point={
+	["map_verysamll"] = Vector(0,0,128),
+	["map_small"] = Vector(-896, 2816, 128)
+}
+
+spacing={
+	["map_verysamll"]=50,
+	["map_small"]=100
+}

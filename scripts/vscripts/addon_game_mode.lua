@@ -19,6 +19,7 @@ function Precache( context )
 			PrecacheResource( "particle", "particles/units/heroes/hero_morphling/morphling_ambient_new.vpcf", context )	
 			PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_mirana.vsndevts", context)
 			PrecacheResource( "particle", "particles/econ/items/puck/puck_alliance_set/puck_illusory_orb_aproset.vpcf", context )
+			PrecacheResource( "soundfile", "soundevents/game_sounds_heroes/game_sounds_lina.vsndevts", context)
 end
 
 -- Create the game mode when we activate

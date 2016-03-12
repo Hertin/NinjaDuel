@@ -1,5 +1,5 @@
 
---respawn_vector={}
+
 
 -- The overall game state has changed
 function GameMode:OnGameRulesStateChange(keys)
@@ -16,11 +16,11 @@ end
 
 
 -- A player picked a hero
-function GameMode:OnPlayerPickHero(keys)
-  local heroClass = keys.hero
-  local heroEntity = EntIndexToHScript(keys.heroindex)
-  local player = EntIndexToHScript(keys.player)
-end
+-- function GameMode:OnPlayerPickHero(keys)
+--   local heroClass = keys.hero
+--   local heroEntity = EntIndexToHScript(keys.heroindex)
+--   local player = EntIndexToHScript(keys.player)
+-- end
 
 -- A player killed another player in a multi-team context
 function GameMode:OnTeamKillCredit(keys)
@@ -58,6 +58,7 @@ end
 function GameMode:OnEntityKilled( keys )
   -- The Unit that was Killed
   local killedUnit = EntIndexToHScript( keys.entindex_killed )
+  -- print(killedUnit:GetTeam())
   -- The Killing entity
   local killerEntity = nil
 
@@ -65,6 +66,7 @@ function GameMode:OnEntityKilled( keys )
     killerEntity = EntIndexToHScript( keys.entindex_attacker )
   end
 
+  -- print(killerEntity:GetTeam())
   for i=0,5 do
     local ability=killerEntity:GetAbilityByIndex(i)
     if ability then
@@ -87,10 +89,15 @@ function GameMode:OnEntityKilled( keys )
     end
   end
 end
+
 function GameMode:OnPlayerPickHero(keys)
   local hero = EntIndexToHScript(keys.heroindex)
   -- This line for example will set the starting gold of every hero to 500 unreliable gold
   hero:SetGold(0, false)
+  local ability = hero:FindAbilityByName("Zanzou_kai")
+  if ability then   
+    ability:SetLevel(1)
+  end
 
   -- These lines will create an item and add it to the player, effectively ensuring they start with the item
   --local item = CreateItem("item_example_item", hero, hero)
@@ -109,11 +116,24 @@ function GameMode:OnNPCSpawned(keys)
   -- This internal handling is used to set up main barebones functions
   --GameMode:_OnNPCSpawned(keys)
   local enti=EntIndexToHScript(keys.entindex)
+  local teamnumber=enti:GetTeam()
+  local p
   print(#(respawn_vector))
   if enti:IsRealHero() then
     if have_set_respawn_vector then
-      local num=RandomInt( 1 , #(respawn_vector) )--复活的时候随机地点
-      FindClearSpaceForUnit(enti,respawn_vector[num],true)
+      while true do
+        local num=RandomInt( 1 , #(respawn_vector) )--复活的时候随机地点
+        p=respawn_vector[num]
+        local units=FindUnitsInRadius(teamnumber, p,nil,1000,DOTA_UNIT_TARGET_TEAM_ENEMY, DOTA_UNIT_TARGET_ALL,DOTA_UNIT_TARGET_FLAG_NONE,0,false)
+        print ("#units "..(#units))
+        if not units[1] then
+          print (p)
+          break
+        end
+      end
+        
+      -- print (KILLS_TO_END_GAME_FOR_TEAM)
+      FindClearSpaceForUnit(enti,p,true)
     end
 
     for i=0,5 do
@@ -129,6 +149,16 @@ end
 
 
 
+function GameMode:OnPlayerGainedLevel(keys)
+  local p_id = keys.player
+  local player =EntIndexToHScript(p_id)
+  local hero = player:GetAssignedHero()
+  local ability = hero:FindAbilityByName("Zanzou_kai")
+  print(ability)
+  if ability and hero:GetLevel()>8 then --lina level limit
+    hero:SetAbilityPoints(hero:GetAbilityPoints()-1)
+  end
+end
 
 
 

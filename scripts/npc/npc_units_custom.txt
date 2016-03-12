@@ -1,9 +1,21 @@
 // Units File
 // this is a template custom unit file with all the staffs commented out
-// "DOTAUnits"
-// {
-// 	"Version"	"1"
-	
+"DOTAUnits"
+{
+	"Version"	"1"
+	"zanzou"
+	{
+		"BaseClass"					"npc_dota_creep_neutral"
+		"Model"						"models/development/invisiblebox.vmdl"
+		"SoundSet"					"Creep_Good_Range"
+		"Level"						"0"
+		"UnitLabel"					"healing_ward"
+		"Ability1"					"majia"
+		"AttackCapabilities"		"DOTA_UNIT_CAP_NO_ATTACK"
+		"MovementCapabilities"		"DOTA_UNIT_CAP_MOVE_FLY"
+		"VisionDaytimeRange"		"100"
+	  	"VisionNighttimeRange"		"100"
+	}
 // 	//=================================================================================	
 // 	// Creature: Gnoll Assassin
 // 	//=================================================================================
@@ -90,4 +102,4 @@
 // 			"XPGain"					"15"
 // 		}
 // 	}
-// }
+}
